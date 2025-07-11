@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Pengembalian Buku - Perpustakaan Modern{% endblock %}
+
+{% block content %}
+<h1 class="fw-bold mb-4">Formulir Pengembalian Buku</h1>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        {% if borrowed_books %}
+        <form action="{{ url_for('pengembalian') }}" method="POST">
+            <div class="mb-3">
+                <label for="buku_id" class="form-label">Pilih Buku yang Akan Dikembalikan</label>
+                <select class="form-select" id="buku_id" name="buku_id" required>
+                    <option value="" disabled selected>-- Pilih Judul Buku --</option>
+                    {% for book in borrowed_books %}
+                    <option value="{{ book.id }}">{{ book.judul }} - oleh {{ book.penulis }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Kembalikan Buku</button>
+            <a href="{{ url_for('daftar_buku') }}" class="btn btn-secondary">Batal</a>
+        </form>
+        {% else %}
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading"><i class="fas fa-info-circle"></i> Informasi</h4>
+            <p>Saat ini tidak ada buku yang sedang dalam status dipinjam.</p>
+            <hr>
+            <p class="mb-0">Semua buku berada di perpustakaan. Anda dapat meminjam buku melalui halaman <a href="{{ url_for('peminjaman') }}" class="alert-link">Peminjaman</a>.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

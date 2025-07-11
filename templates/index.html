@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block title %}Beranda - Perpustakaan Modern{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<header class="hero-section text-center text-white py-5 rounded-3 mb-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Selamat Datang di Perpustakaan Modern</h1>
+        <p class="lead">Temukan dunia pengetahuan di ujung jari Anda. Kelola, pinjam, dan kembalikan buku dengan mudah.</p>
+        <a href="{{ url_for('daftar_buku') }}" class="btn btn-primary btn-lg">Lihat Koleksi Buku</a>
+    </div>
+</header>
+
+<!-- Statistics Section -->
+<section class="stats-section mb-5">
+    <div class="row text-center">
+        <div class="col-md-4">
+            <a href="{{ url_for('daftar_buku') }}" class="stat-link">
+                <div class="stat-card p-4 border rounded-3">
+                    <i class="fas fa-book fa-3x text-primary mb-2"></i>
+                    <h3 class="fs-1 fw-bold">{{ stats.total_buku }}</h3>
+                    <p class="fs-5">Total Judul Buku</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card p-4 border rounded-3 stat-card-clickable" data-bs-toggle="modal" data-bs-target="#modalBukuTersedia">
+                <i class="fas fa-check-circle fa-3x text-success mb-2"></i>
+                <h3 class="fs-1 fw-bold">{{ stats.tersedia }}</h3>
+                <p class="fs-5">Tersedia</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card p-4 border rounded-3 stat-card-clickable" data-bs-toggle="modal" data-bs-target="#modalBukuDipinjam">
+                <i class="fas fa-hourglass-half fa-3x text-warning mb-2"></i>
+                <h3 class="fs-1 fw-bold">{{ stats.dipinjam }}</h3>
+                <p class="fs-5">Dipinjam</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal Buku Tersedia -->
+<div class="modal fade" id="modalBukuTersedia" tabindex="-1" aria-labelledby="modalBukuTersediaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="modalBukuTersediaLabel"><i class="fas fa-check-circle text-success me-2"></i>Daftar Buku Tersedia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% if list_buku_tersedia %}
+                    <ul class="list-group list-group-flush">
+                        {% for buku in list_buku_tersedia %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>{{ buku.judul }} <small class="text-muted">oleh {{ buku.penulis }}</small></span>
+                                <span class="badge bg-primary rounded-pill">{{ buku.kategori }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-center">Saat ini tidak ada buku yang tersedia.</p>
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <a href="{{ url_for('daftar_buku') }}" class="btn btn-primary">Lihat Semua Buku</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Buku Dipinjam -->
+<div class="modal fade" id="modalBukuDipinjam" tabindex="-1" aria-labelledby="modalBukuDipinjamLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="modalBukuDipinjamLabel"><i class="fas fa-hourglass-half text-warning me-2"></i>Daftar Buku Dipinjam</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% if list_buku_dipinjam %}
+                    <ul class="list-group list-group-flush">
+                        {% for item in list_buku_dipinjam %}
+                            <li class="list-group-item">
+                                <div class="fw-bold">{{ item.judul }}</div>
+                                <small class="text-muted">Dipinjam oleh: <strong>{{ item.peminjam }}</strong> pada {{ item.tanggal_pinjam }}</small>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-center">Saat ini tidak ada buku yang sedang dipinjam.</p>
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <a href="{{ url_for('riwayat_transaksi') }}" class="btn btn-primary">Lihat Riwayat Lengkap</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<section class="features-section">
+    <h2 class="text-center mb-4 fw-bold">Fitur Unggulan Kami</h2>
+    <div class="row">
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 text-center feature-card">
+                <div class="card-body">
+                    <div class="feature-icon bg-primary text-white rounded-circle mb-3">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Manajemen Buku</h5>
+                    <p class="card-text">Cari, filter, dan urutkan koleksi buku kami secara instan untuk menemukan apa yang Anda butuhkan.</p>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 text-center feature-card">
+                <div class="card-body">
+                    <div class="feature-icon bg-success text-white rounded-circle mb-3">
+                        <i class="fas fa-hand-holding-hand"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Peminjaman Mudah</h5>
+                    <p class="card-text">Proses peminjaman yang cepat dan efisien langsung dari sistem, tanpa antrian panjang.</p>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100 text-center feature-card">
+                <div class="card-body">
+                    <div class="feature-icon bg-info text-white rounded-circle mb-3">
+                        <i class="fas fa-undo-alt"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Pelacakan Pengembalian</h5>
+                    <p class="card-text">Lacak status peminjaman dan dapatkan pengingat untuk pengembalian buku tepat waktu.</p>
+                    <a href="#" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

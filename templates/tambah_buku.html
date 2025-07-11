@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Tambah Buku Baru - Perpustakaan Modern{% endblock %}
+
+{% block content %}
+<h1 class="fw-bold mb-4">Tambah Buku Baru</h1>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form action="{{ url_for('tambah_buku') }}" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="judul" class="form-label">Judul Buku</label>
+                <input type="text" class="form-control" id="judul" name="judul" required>
+            </div>
+            <div class="mb-3">
+                <label for="penulis" class="form-label">Penulis</label>
+                <input type="text" class="form-control" id="penulis" name="penulis" required>
+            </div>
+            <div class="mb-3">
+                <label for="isbn" class="form-label">ISBN</label>
+                <input type="text" class="form-control" id="isbn" name="isbn">
+            </div>
+            <div class="mb-3">
+                <label for="kategori" class="form-label">Kategori</label>
+                <input type="text" class="form-control" id="kategori" name="kategori" required>
+            </div>
+            <div class="mb-3">
+                <label for="deskripsi" class="form-label">Deskripsi Singkat</label>
+                <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="cover" class="form-label">Gambar Sampul</label>
+                <input class="form-control" type="file" id="cover" name="cover" accept="image/png, image/jpeg, image/jpg">
+            </div>
+            <button type="submit" class="btn btn-primary">Simpan Buku</button>
+            <a href="{{ url_for('daftar_buku') }}" class="btn btn-secondary">Batal</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

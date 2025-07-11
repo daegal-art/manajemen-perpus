@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Daftar Buku - Perpustakaan Modern{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fw-bold">Koleksi Buku</h1>
+    <div>
+        <a href="{{ url_for('tambah_buku') }}" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Tambah Buku Baru</a>
+    </div>
+</div>
+
+<!-- Filter and Search Controls -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-8">
+                <label for="search-input" class="form-label">Cari Buku</label>
+                <input type="text" id="search-input" class="form-control" placeholder="Ketik judul, penulis, atau ISBN...">
+            </div>
+            <div class="col-md-4">
+                <label for="category-filter" class="form-label">Filter Kategori</label>
+                <select id="category-filter" class="form-select">
+                    <option value="all">Semua Kategori</option>
+                    {% for category in categories %}
+                    <option value="{{ category|lower }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Book Grid -->
+<div class="book-grid" id="book-grid-container">
+    {% for book in books %}
+    <div class="book-card" data-search-text="{{ book.judul|lower }} {{ book.penulis|lower }} {{ book.isbn }}" data-category="{{ book.kategori|lower }}">
+        <a href="{{ url_for('detail_buku', id=book.id) }}">
+            {% if book.cover %}
+                <img src="{{ url_for('static', filename='img/covers/' + book.cover) }}" class="book-card-img" alt="Cover {{ book.judul }}">
+            {% else %}
+                <img src="https://placehold.co/200x300/EEE/31343C?text=Cover" class="book-card-img" alt="Cover Belum Tersedia">
+            {% endif %}
+        </a>
+        <div class="book-card-body">
+            <h5 class="book-card-title">{{ book.judul }}</h5>
+            <p class="book-card-author">oleh {{ book.penulis }}</p>
+            <div class="book-card-details">
+                <p class="mb-1"><strong>Kategori:</strong> {{ book.kategori }}</p>
+                <p class="mb-2"><strong>ISBN:</strong> {{ book.isbn }}</p>
+                {% if book.status == 'Tersedia' %}
+                    <span class="badge bg-success">Tersedia</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark">Dipinjam</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="book-card-footer">
+            <a href="{{ url_for('detail_buku', id=book.id) }}" class="btn btn-sm btn-primary">Detail</a>
+            <a href="#" class="btn btn-sm btn-outline-secondary">Pinjam</a>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12">
+        <p class="text-center text-muted">Tidak ada buku yang ditemukan.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit {{ book.judul }} - Perpustakaan Modern{% endblock %}
+
+{% block content %}
+<h1 class="fw-bold mb-4">Edit Buku: {{ book.judul }}</h1>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form action="{{ url_for('edit_buku', id=book.id) }}" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="judul" class="form-label">Judul Buku</label>
+                <input type="text" class="form-control" id="judul" name="judul" value="{{ book.judul }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="penulis" class="form-label">Penulis</label>
+                <input type="text" class="form-control" id="penulis" name="penulis" value="{{ book.penulis }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="isbn" class="form-label">ISBN</label>
+                <input type="text" class="form-control" id="isbn" name="isbn" value="{{ book.isbn }}">
+            </div>
+            <div class="mb-3">
+                <label for="kategori" class="form-label">Kategori</label>
+                <input type="text" class="form-control" id="kategori" name="kategori" value="{{ book.kategori }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="deskripsi" class="form-label">Deskripsi Singkat</label>
+                <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3">{{ book.deskripsi or '' }}</textarea>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Sampul Saat Ini</label>
+                <div>
+                    {% if book.cover %}
+                        <img src="{{ url_for('static', filename='img/covers/' + book.cover) }}" alt="Cover saat ini" style="max-width: 150px; height: auto; border-radius: 4px;">
+                    {% else %}
+                        <p class="text-muted">Belum ada sampul.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="cover" class="form-label">Unggah Sampul Baru (Opsional)</label>
+                <p class="form-text text-muted">Hanya unggah jika Anda ingin mengganti sampul yang ada.</p>
+                <input class="form-control" type="file" id="cover" name="cover" accept="image/png, image/jpeg, image/jpg">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            <a href="{{ url_for('detail_buku', id=book.id) }}" class="btn btn-secondary">Batal</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Riwayat Transaksi - Perpustakaan Modern{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fw-bold">Riwayat Transaksi</h1>
+    <a href="{{ url_for('peminjaman') }}" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Catat Peminjaman Baru</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">ID Transaksi</th>
+                        <th scope="col">Judul Buku</th>
+                        <th scope="col">Nama Peminjam</th>
+                        <th scope="col">Tanggal Pinjam</th>
+                        <th scope="col" class="text-center">Tanggal Kembali</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in transactions %}
+                    <tr>
+                        <td><strong>{{ t.id }}</strong></td>
+                        <td>{{ t.judul_buku }}</td>
+                        <td>{{ t.nama_anggota }}</td>
+                        <td>{{ t.tanggal_pinjam }}</td>
+                        <td class="text-center">
+                            {% if t.tanggal_kembali %}
+                                {{ t.tanggal_kembali }}
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Masih Dipinjam</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center p-4">
+                            <p class="mb-0">Belum ada transaksi yang tercatat.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
