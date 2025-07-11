@@ -346,15 +346,7 @@ def init_db():
             db.session.commit()
             print("Database diinisialisasi dengan data awal.")
 
-from flask import Flask
-
-def create_app():
-    app = Flask(__name__)
-    # ... config, routes, blueprint, dll ...
-    return app
-
-app = create_app()
-
 if __name__ == '__main__':
-    init_db()
+    with app.app_context():
+        init_db()
     app.run(debug=True)
